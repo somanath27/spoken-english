@@ -56,6 +56,12 @@ class App {
     }
 
     private initializeRoutes(routes: Routes[]) {
+        this.app.get('/', (req, res) => {
+            res.status(200).json({
+                message: 'Hello from backend 🚀',
+                env: this.env,
+            });
+        });
         routes.forEach(route => {
             this.app.use('/api/v1', route.router)
         })
