@@ -35,6 +35,29 @@ const UserSchema = new Schema<IUser>(
             enum: ['user', 'admin'],
             default: 'user',
         },
+        streak: {
+            type: Number,
+            default: 0,
+            min: 0,
+        },
+        totalPoints: {
+            type: Number,
+            default: 0,
+            min: 0,
+        },
+        level: {
+            type: String,
+            enum: ['beginner', 'pro'],
+            default: 'beginner'
+        },
+        resetToken: {
+            type: String,
+            default: null,
+        },
+        resetTokenExpiry: {
+            type: Date,
+            default: null,
+        },
         isActive: {
             type: Boolean,
             default: true,

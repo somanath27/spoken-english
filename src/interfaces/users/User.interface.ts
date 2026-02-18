@@ -4,11 +4,16 @@ export type UserRole = 'user' | 'admin';
 
 export interface IUser extends Document {
     _id: Types.ObjectId;
-    fullName:string;
-    phone?: string;
+    fullName: string;
+    phone: string;
     email: string;
     passwordHash: string;
-    nativeLanguage:string;
+    nativeLanguage: string;
+    streak: number;
+    level: string;
+    totalPoints: number;
+    resetToken?: string | null;
+    resetTokenExpiry?: Date | null;
     role: UserRole;
     isActive: boolean;
     createdAt: Date;
@@ -24,7 +29,7 @@ export interface IUserRegisterInput {
 
 export interface IUserLoginInput {
     phone?: string;
-    email?: string;
+    email: string;
     password: string;
 }
 
@@ -40,7 +45,26 @@ export interface IAuthResponse {
         phone?: string;
         email: string;
         role: UserRole;
-        fullName:string;
+        fullName: string;
         nativeLanguage: string;
+        streak: number;
+        totalPoints: number;
+        level: string;
     };
+}
+
+
+export interface IForgotPasswordInput {
+  email: string;
+}
+
+export interface IResetPasswordInput {
+  token: string;
+  newPassword: string;
+}
+
+export interface IChangePasswordInput {
+  userId: string;
+  oldPassword: string;
+  newPassword: string;
 }

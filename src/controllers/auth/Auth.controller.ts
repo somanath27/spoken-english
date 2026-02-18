@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { registerUser, loginUser, getMe } from '../../services/auth/Auth.service';
+import { registerUser, loginUser, getMe, forgotPassword, changePassword, resetPassword } from '../../services/auth/Auth.service';
 
 export const register = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -77,3 +77,84 @@ export const me = async (req: Request, res: Response): Promise<void> => {
         res.status(404).json({ success: false, message });
     }
 };
+
+export const forgotPasswordHandler = async (
+    req: Request,
+    res: Response
+): Promise<void> => {
+    try {
+        const { email } = req.body;
+
+        if (!email) {
+            res.status(400).json({ success: false, message: 'Email is required' });
+            return;
+        }
+
+        const result = await forgotPassword({ email });
+
+        res.status(200).json({ success: true, data: result });
+    } catch (error: unknown) {
+        const message =
+            error instanceof Error ? error.message : 'Failed to process request';
+        res.status(400).json({ success: false, message });
+    }
+};
+
+export const resetPasswordHandler = async (
+    req: Request,
+    res: Response
+): Promise<void> => {
+    try {
+        const { token, newPassword } = req.body;
+
+        if (!token || !newPassword) {
+            res
+                .status(400)
+                .json({ success: false, message: 'Token and new password are required' });
+            return;
+        }
+
+        const result = await resetPassword({ token, newPassword });
+
+        res.status(200).json({ success: true, data: result });
+    } catch (error: unknown) {
+        const message =
+            error instanceof Error ? error.message : 'Failed to reset password';
+        res.status(400).json({ success: false, message });
+    }
+};
+
+export const changePasswordHandler = async (
+    req: Request,
+    res: Response
+): Promise<void> => {
+    try {
+        const userId = (req as Request & { user?: { userId: string } }).user
+            ?.userId;
+
+        if (!userId) {
+            res.status(401).json({ success: false, message: 'Unauthorized' });
+            return;
+        }
+
+        const { oldPassword, newPassword } = req.body;
+
+        if (!oldPassword || !newPassword) {
+            res
+                .status(400)
+                .json({
+                    success: false,
+                    message: 'Old password and new password are required',
+                });
+            return;
+        }
+
+        const result = await changePassword({ userId, oldPassword, newPassword });
+
+        res.status(200).json({ success: true, data: result });
+    } catch (error: unknown) {
+        const message =
+            error instanceof Error ? error.message : 'Failed to change password';
+        res.status(400).json({ success: false, message });
+    }
+}
