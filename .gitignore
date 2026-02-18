@@ -81,9 +81,10 @@ build
 .cache
 .parcel-cache
 
-# Next.js build output
+# Nodejs build output
 .next
 out
+dist/
 
 # Nuxt.js build / generate output
 .nuxt
