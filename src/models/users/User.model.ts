@@ -3,12 +3,6 @@ import { Schema, model } from 'mongoose';
 
 const UserSchema = new Schema<IUser>(
     {
-        fullName: {
-            type: String,
-            unique: true,
-            sparse: true,
-            trim: true,
-        },
         phone: {
             type: String,
             unique: true,
@@ -22,10 +16,6 @@ const UserSchema = new Schema<IUser>(
             lowercase: true,
             trim: true,
         },
-        nativeLanguage: {
-            type: String,
-            required: true,
-        },
         passwordHash: {
             type: String,
             required: true,
@@ -34,21 +24,6 @@ const UserSchema = new Schema<IUser>(
             type: String,
             enum: ['user', 'admin'],
             default: 'user',
-        },
-        streak: {
-            type: Number,
-            default: 0,
-            min: 0,
-        },
-        totalPoints: {
-            type: Number,
-            default: 0,
-            min: 0,
-        },
-        level: {
-            type: String,
-            enum: ['beginner', 'pro'],
-            default: 'beginner'
         },
         resetToken: {
             type: String,
